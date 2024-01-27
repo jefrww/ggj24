@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-enum Movement 
+enum Movement
 {
     Horizontal,
     Vertical,
@@ -21,28 +21,23 @@ public class PlayerMovement : MonoBehaviour
     public float aircontrol;
     public bool isActive;
 
+    public bool hasBody = false;
+    public bool hasLegs = false;
+    public bool hasHead = false;
+    public bool hasHands = false;
+    public bool hasJaw = false;
     public Animator animator;
-    
+
     private Rigidbody2D rb;
     //private bool hasBody= true,hasLegs= true,hasHands= true,hasHead= true, hasJaw= true;
     //private bool hasBody= false,hasLegs= false,hasHands= false,hasHead= false, hasJaw= false;
-    private Dictionary<string, bool> bodyConfig = new Dictionary<string, bool>()
-    {
-        {"hasBody", true},
-        {"hasHands", false},
-        {"hasHead", false},
-        {"hasLegs", false},
-        {"hasJaw", false},
-    };
 
-    private bool _onGround= false,_onLeftWall= false, _onRightWall = false;
+    private bool _onGround = false, _onLeftWall = false, _onRightWall = false;
 
 
     void Awake()
     {
         rb = this.GetComponent<Rigidbody2D>();
-        _groundLayer = LayerMask.GetMask("Ground");
-        _magnetLayer = LayerMask.GetMask("Wall");
     }
 
     void Update()
@@ -51,14 +46,15 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
+
         // update the animation
         SetAnimation();
         // get current state of the player first
         _onGround = IsTouchingGround();
         (_onLeftWall, _onRightWall) = IsTouchingWalls();
-        Debug.Log("Ground: " +_onGround);
-        Debug.Log("Left Wall: " +_onLeftWall);
-        Debug.Log("Right Wall: "+_onRightWall);
+        Debug.Log("Ground: " + _onGround);
+        Debug.Log("Left Wall: " + _onLeftWall);
+        Debug.Log("Right Wall: " + _onRightWall);
 
         Vector3 velocity = Vector3.zero;
         Movement movement = Movement.None;
@@ -68,26 +64,31 @@ public class PlayerMovement : MonoBehaviour
             movement = Movement.Horizontal;
             velocity += Vector3.left;
         }
+
         if (Input.GetKey(KeyCode.D) && canGoRight())
         {
             movement = Movement.Horizontal;
             velocity += Vector3.right;
         }
+
+        Debug.Log("WALL : " + canWallClimb() );
         if (Input.GetKey(KeyCode.W) && canWallClimb())
         {
+            Debug.Log("IM CLIMGINB");
             movement = Movement.Vertical;
             velocity += Vector3.up;
         }
+
         if (Input.GetKey(KeyCode.S) && canWallClimb())
         {
             movement = Movement.Vertical;
             velocity += Vector3.down;
         }
+
         // normalize change in speed to ensure consistency
         velocity = velocity.normalized;
-        
-        
-        
+
+
         // apply movement
         switch (movement)
         {
@@ -100,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
             case Movement.None:
                 break;
         }
-        
+
         // reduce air control
         if (isInAir())
         {
@@ -108,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         rb.AddForce(velocity);
-        
+
         if (Input.GetKeyDown(KeyCode.Space) && canJump())
         {
             rb.AddForce(Vector2.up * jumpSpeed);
@@ -117,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if( rb.velocity.sqrMagnitude > maxVelocity )
+        if (rb.velocity.sqrMagnitude > maxVelocity)
         {
             rb.velocity *= 0.75f;
         }
@@ -127,50 +128,47 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            bodyConfig["hasBody"] = !bodyConfig["hasBody"];
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            bodyConfig["hasHands"] = !bodyConfig["hasHands"];
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            bodyConfig["hasHead"] = !bodyConfig["hasHead"];
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            bodyConfig["hasLegs"] = !bodyConfig["hasLegs"];
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            bodyConfig["hasJaw"] = !bodyConfig["hasJaw"];
+            hasBody = !hasBody;
+            animator.SetBool("hasBody", hasBody);
         }
 
-        foreach (var entry in bodyConfig)
+        if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            animator.SetBool(entry.Key, entry.Value);
+            hasHands = !hasHands;
+            animator.SetBool("hasHands", hasHands);
         }
-        if (Input.GetKeyDown(KeyCode.Alpha0))
+
+        if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            foreach (var entry in bodyConfig)
-            {
-                bodyConfig[entry.Key] = false;
-                animator.SetBool(entry.Key, entry.Value);
-            }
+            hasHead = !hasHead;
+            animator.SetBool("hasHead", hasHead);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            hasLegs = !hasLegs;
+            animator.SetBool("hasLegs", hasLegs);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            hasJaw = !hasJaw;
+            animator.SetBool("hasJaw", hasJaw);
         }
     }
 
     bool IsTouchingGround()
     {
-        RaycastHit2D hit = Physics2D.Raycast(rb.transform.position, Vector3.down, groundDistance, LayerMask.GetMask("Ground"));
+        RaycastHit2D hit = Physics2D.Raycast(rb.transform.position, Vector3.down, groundDistance,
+            LayerMask.GetMask("Ground"));
         if (hit.collider == null)
         {
             return false;
         }
-        
+
         return hit.collider.gameObject.layer == _groundLayer;
     }
-    
+
     (bool left, bool right) IsTouchingWalls()
     {
         Vector3 position = rb.transform.position;
@@ -182,7 +180,7 @@ public class PlayerMovement : MonoBehaviour
         {
             touchingLeft = true;
         }
-        
+
         if (rightHit.collider != null && rightHit.collider.gameObject.layer == _magnetLayer)
         {
             touchingRight = true;
@@ -193,31 +191,31 @@ public class PlayerMovement : MonoBehaviour
 
     bool canGoLeft()
     {
-        return bodyConfig["hasBody"] || bodyConfig["hasHands"] || bodyConfig["hasHead"] || bodyConfig["hasJaw"];
+        return hasBody || hasHands || hasHead || hasJaw || hasLegs;
     }
 
     bool canGoRight()
     {
-        return bodyConfig["hasBody"] || bodyConfig["hasHands"] || bodyConfig["hasHead"] || bodyConfig["hasJaw"];
+        return hasBody || hasHands || hasHead || hasJaw || hasLegs;
     }
 
     bool canJump()
     {
-        return bodyConfig["hasLegs"] && (_onGround);
+        return hasLegs && (_onGround);
     }
 
     bool canWallClimb()
     {
-        return bodyConfig["hasHands"] && (_onRightWall || _onLeftWall);
+        return hasHands && (_onRightWall || _onLeftWall);
     }
 
     bool canLaser()
     {
-        return  bodyConfig["hasHead"] ;
+        return hasHead;
     }
+
     bool isInAir()
     {
-        return !(_onRightWall || _onLeftWall || _onGround) ;
+        return !(_onRightWall || _onLeftWall || _onGround);
     }
-    
 }
