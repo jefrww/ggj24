@@ -12,20 +12,24 @@
             "scaleInDock": 1
         },
         "CityTileMap.json": {
-            "scale": 0.5727213541666667,
+            "scale": 0.5422,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": -254.923269296351,
-                "y": 0
+                "x": 530.2471412762816,
+                "y": -673.1833271855403
             }
         },
         "CityTileMap.tmx": {
-            "scale": 1.0364,
-            "selectedLayer": 0,
+            "scale": 1.6351,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": -262.44693168660746,
-                "y": -773.8324971053647
+                "x": -3205.6143355146473,
+                "y": -126.59776160479481
             }
+        },
+        "CityTiles.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 4.51
         }
     },
     "last.exportedFilePath": "/home/andymichael/Andy/GGJ2024/Assets/TileSource",
@@ -37,7 +41,9 @@
     ],
     "project": "Roboto.tiled-project",
     "recentFiles": [
-        "CityTileMap.tmx"
+        "CityTileMap.tmx",
+        "CityTiles.tsx",
+        "CityTileMap.json"
     ],
     "tileset.lastUsedFormat": "tsx"
 }
