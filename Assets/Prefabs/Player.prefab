@@ -148,7 +148,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &8560238679243595569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,7 +171,7 @@ MonoBehaviour:
   isActive: 0
   hasBody: 0
   hasLegs: 0
-  hasHead: 0
+  hasHead: 1
   hasHands: 0
   hasJaw: 0
   animator: {fileID: 5391793212808290548}
@@ -296,9 +296,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.33, y: -0.39}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.12
 --- !u!50 &1961549721962595464
 Rigidbody2D:
   serializedVersion: 4
@@ -325,7 +325,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &7539059436639322281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,10 +346,10 @@ MonoBehaviour:
   maxVelocity: 300
   aircontrol: 0.4
   isActive: 0
-  hasBody: 0
+  hasBody: 1
   hasLegs: 0
   hasHead: 0
-  hasHands: 0
+  hasHands: 1
   hasJaw: 0
   animator: {fileID: 4584910605940582182}
 --- !u!61 &889575925853797089
@@ -457,7 +457,7 @@ Transform:
   m_GameObject: {fileID: 822833764397569691}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 3}
+  m_LocalPosition: {x: -7.45, y: -16.28, z: 3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -670,7 +670,7 @@ Transform:
   m_GameObject: {fileID: 1477108672464909984}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -18.75, y: 0, z: 3}
+  m_LocalPosition: {x: -8.47, y: -0.35, z: 3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -911,7 +911,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &6119631976388846818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -932,8 +932,8 @@ MonoBehaviour:
   maxVelocity: 300
   aircontrol: 0.4
   isActive: 0
-  hasBody: 0
-  hasLegs: 0
+  hasBody: 1
+  hasLegs: 1
   hasHead: 0
   hasHands: 0
   hasJaw: 0
@@ -1008,7 +1008,7 @@ Transform:
   m_GameObject: {fileID: 2645112201729014770}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 40.95, y: 0, z: 3}
+  m_LocalPosition: {x: 58.31, y: -16.61, z: 3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1041,7 +1041,7 @@ Transform:
   m_GameObject: {fileID: 3302040382719784516}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.51, y: 0, z: 3}
+  m_LocalPosition: {x: -31.99, y: -16.72, z: 3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1297,9 +1297,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.34}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.23
 --- !u!50 &8878309653143753789
 Rigidbody2D:
   serializedVersion: 4
@@ -1326,7 +1326,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &8853899264373022991
 MonoBehaviour:
   m_ObjectHideFlags: 0
