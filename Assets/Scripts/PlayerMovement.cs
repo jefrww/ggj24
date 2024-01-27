@@ -12,6 +12,8 @@ enum Movement
 
 public class PlayerMovement : MonoBehaviour
 {
+    public int GroundLayer = 6;
+    public int MagnetLayer = 7;
     public float horizontalSpeed, verticalSpeed;
     public float jumpSpeed;
     public float groundDistance, wallDistance;
@@ -163,7 +165,8 @@ public class PlayerMovement : MonoBehaviour
         {
             return false;
         }
-        return hit.collider.CompareTag("Ground");
+        
+        return hit.collider.gameObject.layer == GroundLayer;
     }
     
     (bool left, bool right) IsTouchingWalls()
@@ -173,12 +176,12 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit2D leftHit = Physics2D.Raycast(position, Vector3.left, wallDistance, LayerMask.GetMask("Wall"));
         RaycastHit2D rightHit = Physics2D.Raycast(position, Vector3.right, wallDistance, LayerMask.GetMask("Wall"));
 
-        if (leftHit.collider != null && leftHit.collider.CompareTag("Wall"))
+        if (leftHit.collider != null && leftHit.collider.gameObject.layer == MagnetLayer)
         {
             touchingLeft = true;
         }
         
-        if (rightHit.collider != null && rightHit.collider.CompareTag("Wall"))
+        if (rightHit.collider != null && rightHit.collider.gameObject.layer == MagnetLayer)
         {
             touchingRight = true;
         }
