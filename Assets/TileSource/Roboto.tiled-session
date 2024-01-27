@@ -24,7 +24,7 @@
             "selectedLayer": 0,
             "viewCenter": {
                 "x": -262.44693168660746,
-                "y": -6.754148977228869
+                "y": -773.8324971053647
             }
         }
     },
@@ -37,6 +37,7 @@
     ],
     "project": "Roboto.tiled-project",
     "recentFiles": [
+        "CityTileMap.tmx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }
