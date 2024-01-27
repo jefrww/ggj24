@@ -52,9 +52,9 @@ public class PlayerMovement : MonoBehaviour
         // get current state of the player first
         _onGround = IsTouchingGround();
         (_onLeftWall, _onRightWall) = IsTouchingWalls();
-        Debug.Log("Ground: " + _onGround);
-        Debug.Log("Left Wall: " + _onLeftWall);
-        Debug.Log("Right Wall: " + _onRightWall);
+        // Debug.Log("Ground: " + _onGround);
+         Debug.Log("Left Wall: " + _onLeftWall);
+         Debug.Log("Right Wall: " + _onRightWall);
 
         Vector3 velocity = Vector3.zero;
         Movement movement = Movement.None;
@@ -70,11 +70,9 @@ public class PlayerMovement : MonoBehaviour
             movement = Movement.Horizontal;
             velocity += Vector3.right;
         }
-
-        Debug.Log("WALL : " + canWallClimb() );
+        
         if (Input.GetKey(KeyCode.W) && canWallClimb())
         {
-            Debug.Log("IM CLIMGINB");
             movement = Movement.Vertical;
             velocity += Vector3.up;
         }
@@ -158,7 +156,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("hasJaw", hasJaw);
         }
     }
-
+    
     bool IsTouchingGround()
     {
         RaycastHit2D hit = Physics2D.Raycast(rb.transform.position, Vector3.down, groundDistance,

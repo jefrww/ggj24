@@ -6,86 +6,151 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public Camera mainCam;
+
     // public List<Camera> partCams;
     public float transitionSpeed = .5f;
 
     public PlayerMovement mainBody;
     public List<PlayerMovement> partBodies;
-    
+    public List<TransmitZone> transmitZones;
+
     private int _currentStep = 0;
     private bool _isTransitioning = false;
     private float _completion = 0f;
 
-    private Vector3 _origin;
+    private Vector3 _originPosition;
+    private Vector3 _targetPosition;
+    private PlayerMovement _targetPlayer;
 
-    private Vector3 _target;
-    private PlayerMovement _targetPart;
-    
+    private Rigidbody2D mainRB;
+
     // Start is called before the first frame update
     void Awake()
     {
         mainCam.enabled = true;
-        _targetPart = mainBody;
-
-        // foreach (var cam in partCams)
-        // {
-        //     cam.enabled = false;
-        // }
+        activateTargetPlayer(mainBody);
+        _targetPlayer = mainBody;
+        mainRB = mainBody.GetComponent<Rigidbody2D>();
     }
 
     public void setTargetPart(PlayerMovement newTarget)
     {
-        if (newTarget != mainBody)
+        if (!isMainBodyTarget())
         {
+            // Advance the artifical counter if we are NOT returning to the body
             _currentStep++;
         }
-        _target = newTarget.transform.position;
-        _target.z = this.transform.position.z;
-        _origin = _targetPart.transform.position;
-        _origin.z = this.transform.position.z;
-        _targetPart = newTarget;
+        mainBody.animator.SetBool("sendSignal", isMainBodyTarget());
 
+        _targetPosition = newTarget.transform.position;
+        _targetPosition.z = this.transform.position.z;
+        _originPosition = _targetPlayer.transform.position;
+        _originPosition.z = this.transform.position.z;
+        _targetPlayer = newTarget;
         
         _isTransitioning = true;
     }
-    
+
     // Update is called once per frame
     void Update()
     {
         if (!_isTransitioning && Input.GetKeyDown(KeyCode.K))
         {
-            if (_targetPart == mainBody)
+            if (_targetPlayer == mainBody)
             {
-                setTargetPart(partBodies[_currentStep]);                
+                setTargetPart(partBodies[_currentStep]);
             }
             else
             {
                 setTargetPart(mainBody);
             }
-            
         }
 
         if (_isTransitioning)
         {
-            if (_completion < 1) {
+            if (_completion < 1)
+            {
                 _completion += Time.deltaTime * transitionSpeed;
-                mainCam.transform.position = Vector3.Slerp(_origin, _target, _completion);
+                mainCam.transform.position = Vector3.Slerp(_originPosition, _targetPosition, _completion);
             }
             else
             {
+                // Finished anuimating camera
                 _isTransitioning = false;
+                activateTargetPlayer(_targetPlayer);
+                mainBody.animator.SetBool("sendSignal", !isMainBodyTarget());
                 _completion = 0f;
             }
         }
         else
         {
-            mainCam.transform.position = new Vector3(_targetPart.transform.position.x, _targetPart.transform.position.y, this.transform.position.z);
+            mainCam.transform.position = new Vector3(_targetPlayer.transform.position.x,
+                _targetPlayer.transform.position.y, this.transform.position.z);
+        }
+        
+        TransmitZone inZone = isPlayerInTransmitZone();
+        
+        if (!_isTransitioning)
+        {
+            if (isMainBodyTarget() && inZone && Input.GetKeyDown(KeyCode.E)) {
+                setTargetPart(inZone.targetPlayer);
+            }
+            else if (!isMainBodyTarget() && inZone && inZone.targetPlayer == _targetPlayer)
+            {
+                Debug.Log("REUNITED!");
+                if (_targetPlayer.hasLegs)
+                {
+                    mainBody.hasLegs = true;
+                }
+                if (_targetPlayer.hasHands)
+                {
+                    mainBody.hasHands = true;
+                }
+                if (_targetPlayer.hasHead)
+                {
+                    mainBody.hasHead = true;
+                }
+                inZone.gameObject.SetActive(false);
+                GameObject toDeactivate = _targetPlayer.transform.parent.gameObject;
+
+                setTargetPart(mainBody);
+                toDeactivate.SetActive(false);
+            }            
+        }
+
+    }
+
+    private void haltPlayer(PlayerMovement player)
+    {
+        player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+    }
+
+    private TransmitZone isPlayerInTransmitZone()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(_targetPlayer.transform.position, Vector3.down, 0,
+            LayerMask.GetMask("Transmit"));
+        if (hit.collider != null)
+        {
+            TransmitZone foundZone = hit.collider.GetComponent<TransmitZone>();
+            return foundZone;
+        }
+
+        return null;
+    }
+
+    private void activateTargetPlayer(PlayerMovement target)
+    {
+        mainBody.isActive = target == mainBody;
+        haltPlayer(mainBody);
+        foreach (var part in partBodies)
+        {
+            haltPlayer(part);
+            part.isActive = part == target;
         }
     }
 
-    void goBackToRobot()
+    private bool isMainBodyTarget()
     {
-        
-        _isTransitioning = true;
+        return _targetPlayer == mainBody;
     }
 }
