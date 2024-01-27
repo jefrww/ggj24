@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-enum NextCam 
-{
-    Body,
-    Part
-}
 
 public class CameraController : MonoBehaviour
 {
     public Camera mainCam;
-    public Camera transitionCam;
-    public List<Camera> partCams;
+    // public List<Camera> partCams;
     public float transitionSpeed = .5f;
 
     public PlayerMovement mainBody;
@@ -21,92 +15,77 @@ public class CameraController : MonoBehaviour
     private int _currentStep = 0;
     private bool _isTransitioning = false;
     private float _completion = 0f;
-    private NextCam next = NextCam.Part;
 
     private Vector3 _origin;
 
     private Vector3 _target;
+    private PlayerMovement _targetPart;
+    
     // Start is called before the first frame update
     void Awake()
     {
         mainCam.enabled = true;
-        transitionCam.enabled = false;
-        foreach (var cam in partCams)
-        {
-            cam.enabled = false;
-        }
+        _targetPart = mainBody;
+
+        // foreach (var cam in partCams)
+        // {
+        //     cam.enabled = false;
+        // }
     }
 
+    public void setTargetPart(PlayerMovement newTarget)
+    {
+        if (newTarget != mainBody)
+        {
+            _currentStep++;
+        }
+        _target = newTarget.transform.position;
+        _target.z = this.transform.position.z;
+        _origin = _targetPart.transform.position;
+        _origin.z = this.transform.position.z;
+        _targetPart = newTarget;
+
+        
+        _isTransitioning = true;
+    }
+    
     // Update is called once per frame
     void Update()
     {
         if (!_isTransitioning && Input.GetKeyDown(KeyCode.K))
         {
-            switch (next)
+            if (_targetPart == mainBody)
             {
-                case NextCam.Part:
-                    Debug.Log("transitioning to part");
-                    goToNextPart();
-                    break;
-                case NextCam.Body:
-                    Debug.Log("transitioning to robo");
-                    goBackToRobot();
-                    break;
+                setTargetPart(partBodies[_currentStep]);                
             }
+            else
+            {
+                setTargetPart(mainBody);
+            }
+            
         }
 
         if (_isTransitioning)
         {
             if (_completion < 1) {
                 _completion += Time.deltaTime * transitionSpeed;
-                transitionCam.transform.position = Vector3.Slerp(_origin, _target, _completion);
+                mainCam.transform.position = Vector3.Slerp(_origin, _target, _completion);
             }
             else
             {
                 _isTransitioning = false;
                 _completion = 0f;
-                transitionCam.enabled = false;
-                switch (next)
-                {
-                    case NextCam.Body:
-                        mainCam.enabled = true;
-                        mainBody.isActive = true;
-                        next = NextCam.Part;
-                        _currentStep++;
-                        break;
-                    case NextCam.Part:
-                        partCams[_currentStep].enabled = true;
-                        partBodies[_currentStep].isActive = true;
-                        next = NextCam.Body;
-                        break;
-                }
             }
         }
-    }
-
-    void goToNextPart()
-    {
-        mainBody.animator.SetBool("sendSignal", true);
-        
-        mainBody.isActive = false;
-        mainCam.enabled = false;
-        
-        _origin = mainCam.transform.position;
-        _target = partCams[_currentStep].transform.position;
-        
-        transitionCam.enabled = true;
-        _isTransitioning = true;
+        else
+        {
+            mainCam.transform.position = new Vector3(_targetPart.transform.position.x, _targetPart.transform.position.y, this.transform.position.z);
+        }
     }
 
     void goBackToRobot()
     {
-        partBodies[_currentStep].isActive = false;
-        partCams[_currentStep].enabled = false;
-
-        _origin = partCams[_currentStep].transform.position;
-        _target = mainCam.transform.position;
         
-        transitionCam.enabled = true;
         _isTransitioning = true;
     }
 }
