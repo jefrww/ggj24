@@ -12,8 +12,8 @@ enum Movement
 
 public class PlayerMovement : MonoBehaviour
 {
-    public int GroundLayer = 6;
-    public int MagnetLayer = 7;
+    private int _groundLayer = 6;
+    private int _magnetLayer = 7;
     public float horizontalSpeed, verticalSpeed;
     public float jumpSpeed;
     public float groundDistance, wallDistance;
@@ -41,6 +41,8 @@ public class PlayerMovement : MonoBehaviour
     void Awake()
     {
         rb = this.GetComponent<Rigidbody2D>();
+        _groundLayer = LayerMask.GetMask("Ground");
+        _magnetLayer = LayerMask.GetMask("Wall");
     }
 
     void Update()
@@ -166,7 +168,7 @@ public class PlayerMovement : MonoBehaviour
             return false;
         }
         
-        return hit.collider.gameObject.layer == GroundLayer;
+        return hit.collider.gameObject.layer == _groundLayer;
     }
     
     (bool left, bool right) IsTouchingWalls()
@@ -176,12 +178,12 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit2D leftHit = Physics2D.Raycast(position, Vector3.left, wallDistance, LayerMask.GetMask("Wall"));
         RaycastHit2D rightHit = Physics2D.Raycast(position, Vector3.right, wallDistance, LayerMask.GetMask("Wall"));
 
-        if (leftHit.collider != null && leftHit.collider.gameObject.layer == MagnetLayer)
+        if (leftHit.collider != null && leftHit.collider.gameObject.layer == _magnetLayer)
         {
             touchingLeft = true;
         }
         
-        if (rightHit.collider != null && rightHit.collider.gameObject.layer == MagnetLayer)
+        if (rightHit.collider != null && rightHit.collider.gameObject.layer == _magnetLayer)
         {
             touchingRight = true;
         }
