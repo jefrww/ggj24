@@ -59,7 +59,7 @@ public class CameraController : MonoBehaviour
         {
             if (_completion < 1) {
                 _completion += Time.deltaTime * transitionSpeed;
-                transitionCam.transform.position = Vector3.Lerp(_origin, _target, _completion);
+                transitionCam.transform.position = Vector3.Slerp(_origin, _target, _completion);
             }
             else
             {
@@ -86,6 +86,8 @@ public class CameraController : MonoBehaviour
 
     void goToNextPart()
     {
+        mainBody.animator.SetBool("sendSignal", true);
+        
         mainBody.isActive = false;
         mainCam.enabled = false;
         
