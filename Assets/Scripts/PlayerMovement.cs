@@ -17,9 +17,21 @@ public class PlayerMovement : MonoBehaviour
     public float groundDistance, wallDistance;
     public float maxVelocity;
     public float aircontrol;
+
+    public Animator animator;
     
     private Rigidbody2D rb;
-    private bool hasTorso= true,hasLegs= true,hasArms= true,hasHead= true, hasJaw= true;
+    //private bool hasBody= true,hasLegs= true,hasHands= true,hasHead= true, hasJaw= true;
+    //private bool hasBody= false,hasLegs= false,hasHands= false,hasHead= false, hasJaw= false;
+    private Dictionary<string, bool> bodyConfig = new Dictionary<string, bool>()
+    {
+        {"hasBody", true},
+        {"hasHands", false},
+        {"hasHead", false},
+        {"hasLegs", false},
+        {"hasJaw", false},
+    };
+
     private bool _onGround= false,_onLeftWall= false, _onRightWall = false;
 
 
@@ -30,6 +42,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {   
+        // update the animation
+        SetAnimation();
         // get current state of the player first
         _onGround = IsTouchingGround();
         (_onLeftWall, _onRightWall) = IsTouchingWalls();
@@ -94,10 +108,46 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(rb.velocity.sqrMagnitude);
         if( rb.velocity.sqrMagnitude > maxVelocity )
         {
             rb.velocity *= 0.75f;
+        }
+    }
+
+    private void SetAnimation()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            bodyConfig["hasBody"] = !bodyConfig["hasBody"];
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            bodyConfig["hasHands"] = !bodyConfig["hasHands"];
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            bodyConfig["hasHead"] = !bodyConfig["hasHead"];
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            bodyConfig["hasLegs"] = !bodyConfig["hasLegs"];
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            bodyConfig["hasJaw"] = !bodyConfig["hasJaw"];
+        }
+
+        foreach (var entry in bodyConfig)
+        {
+            animator.SetBool(entry.Key, entry.Value);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            foreach (var entry in bodyConfig)
+            {
+                bodyConfig[entry.Key] = false;
+                animator.SetBool(entry.Key, entry.Value);
+            }
         }
     }
 
@@ -133,27 +183,27 @@ public class PlayerMovement : MonoBehaviour
 
     bool canGoLeft()
     {
-        return hasTorso || hasArms || hasHead || hasJaw;
+        return bodyConfig["hasBody"] || bodyConfig["hasHands"] || bodyConfig["hasHead"] || bodyConfig["hasJaw"];
     }
 
     bool canGoRight()
     {
-        return hasTorso || hasArms || hasHead || hasJaw;
+        return bodyConfig["hasBody"] || bodyConfig["hasHands"] || bodyConfig["hasHead"] || bodyConfig["hasJaw"];
     }
 
     bool canJump()
     {
-        return hasLegs && (_onGround);
+        return bodyConfig["hasLegs"] && (_onGround);
     }
 
     bool canWallClimb()
     {
-        return hasArms && (_onRightWall || _onLeftWall);
+        return bodyConfig["hasHands"] && (_onRightWall || _onLeftWall);
     }
 
     bool canLaser()
     {
-        return  hasHead ;
+        return  bodyConfig["hasHead"] ;
     }
     bool isInAir()
     {
