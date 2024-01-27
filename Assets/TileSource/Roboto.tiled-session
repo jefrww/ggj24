@@ -1,0 +1,25 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        }
+    },
+    "last.exportedFilePath": "/home/andymichael/Andy/GGJ2024/Assets/TileSource",
+    "last.imagePath": "/home/andymichael/Andy/GGJ2024/Assets/TileSource/Art/1 Tiles",
+    "map.fixedSize": false,
+    "map.lastUsedExportFilter": "Tiled map files (*.tmx *.xml)",
+    "map.lastUsedFormat": "json",
+    "openFiles": [
+    ],
+    "project": "Roboto.tiled-project",
+    "recentFiles": [
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}
