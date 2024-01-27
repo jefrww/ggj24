@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     public float groundDistance, wallDistance;
     public float maxVelocity;
     public float aircontrol;
+    public bool isActive;
 
     public Animator animator;
     
@@ -41,7 +42,11 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void Update()
-    {   
+    {
+        if (!isActive)
+        {
+            return;
+        }
         // update the animation
         SetAnimation();
         // get current state of the player first
