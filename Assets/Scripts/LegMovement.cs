@@ -3,14 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-enum Movement
-{
-    Horizontal,
-    Vertical,
-    None
-}
 
-public class PlayerMovement : MonoBehaviour
+public class LegMovement : MonoBehaviour
 {
     private int _groundLayer = 6;
     private int _magnetLayer = 7;
@@ -21,11 +15,8 @@ public class PlayerMovement : MonoBehaviour
     public float aircontrol;
     public bool isActive;
 
-    public bool hasBody = false;
-    public bool hasLegs = false;
-    public bool hasHead = false;
-    public bool hasHands = false;
-    public bool hasJaw = false;
+    public bool hasLegs = true;
+
     public Animator animator;
 
     private Rigidbody2D rb;
@@ -48,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // update the animation
-        SetAnimation();
+        // SetAnimation();
         // get current state of the player first
         _onGround = IsTouchingGround();
         (_onLeftWall, _onRightWall) = IsTouchingWalls();
@@ -123,42 +114,7 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity *= 0.75f;
         }
     }
-
-    private void SetAnimation()
-    {
-        animator.SetFloat("horizontalVelocity", rb.velocity.x);
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            hasBody = !hasBody;
-            animator.SetBool("hasBody", hasBody);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            hasHands = !hasHands;
-            animator.SetBool("hasHands", hasHands);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            hasHead = !hasHead;
-            animator.SetBool("hasHead", hasHead);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            hasLegs = !hasLegs;
-            animator.SetBool("hasLegs", hasLegs);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            hasJaw = !hasJaw;
-            animator.SetBool("hasJaw", hasJaw);
-        }
-    }
-
+    
     bool IsTouchingGround()
     {
         RaycastHit2D hit = Physics2D.Raycast(rb.transform.position, Vector3.down, groundDistance,
@@ -191,14 +147,15 @@ public class PlayerMovement : MonoBehaviour
         return (touchingLeft, touchingRight);
     }
 
+
     bool canGoLeft()
     {
-        return hasBody || hasHands || hasHead || hasJaw || hasLegs;
+        return true|| hasLegs;
     }
 
     bool canGoRight()
     {
-        return hasBody || hasHands || hasHead || hasJaw || hasLegs;
+        return true || hasLegs;
     }
 
     bool canJump()
@@ -208,12 +165,7 @@ public class PlayerMovement : MonoBehaviour
 
     bool canWallClimb()
     {
-        return hasHands && (_onRightWall || _onLeftWall);
-    }
-
-    bool canLaser()
-    {
-        return hasHead;
+        return _onRightWall || _onLeftWall;
     }
 
     bool isInAir()
