@@ -20,11 +20,11 @@
             }
         },
         "CityTileMap.tmx": {
-            "scale": 1.6351,
+            "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": -3205.6143355146473,
-                "y": -126.59776160479481
+                "x": -3179.5,
+                "y": -39
             }
         },
         "CityTiles.tsx": {
