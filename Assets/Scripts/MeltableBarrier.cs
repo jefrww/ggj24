@@ -11,9 +11,8 @@ public class MeltableBarrier : MonoBehaviour
 
     public void MeltMe()
     {
-        Debug.Log("MELTING DOWN A SQUARE");
-        gameObject.SetActive(false);
-        this.GetComponent<Animator>().SetBool("melt", true);
+        GetComponentInChildren<Collider2D>().enabled = false;
+        GetComponentInChildren<Animator>().SetBool("melt", true);
     }
 }
 
