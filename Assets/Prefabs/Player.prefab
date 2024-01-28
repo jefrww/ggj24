@@ -169,6 +169,7 @@ MonoBehaviour:
   maxVelocity: 300
   aircontrol: 0.4
   isActive: 0
+  burstSpeed: 0
   hasBody: 0
   hasLegs: 0
   hasHead: 1
@@ -490,6 +491,7 @@ MonoBehaviour:
   maxVelocity: 300
   aircontrol: 0.4
   isActive: 0
+  burstSpeed: 0
   hasBody: 1
   hasLegs: 0
   hasHead: 0
@@ -896,6 +898,7 @@ MonoBehaviour:
   maxVelocity: 300
   aircontrol: 0.4
   isActive: 0
+  burstSpeed: 0
   hasBody: 1
   hasLegs: 1
   hasHead: 0
@@ -972,7 +975,7 @@ Transform:
   m_GameObject: {fileID: 2645112201729014770}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 58.31, y: -16.61, z: 3}
+  m_LocalPosition: {x: 68.85, y: 4.8, z: 3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1449,6 +1452,7 @@ MonoBehaviour:
   maxVelocity: 300
   aircontrol: 0.4
   isActive: 1
+  burstSpeed: 0
   hasBody: 1
   hasLegs: 0
   hasHead: 0
