@@ -53,7 +53,8 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         // reset the animation to merge body parts once it's done
-        mainBody.animator.SetBool("combineParts", false);
+        // mainBody.animator.SetBool("combineParts", false);
+        
         TransmitZone inZone = isPlayerInTransmitZone();
         if (!_isTransitioning && Input.GetKeyDown(KeyCode.K))
         {
@@ -101,6 +102,7 @@ public class CameraController : MonoBehaviour
             else if (!isMainBodyTarget() && inZone && inZone.targetPlayer == _targetPlayer)
             {
                 Debug.Log("REUNITED!");
+                mainBody.animator.SetBool("sendSignal", false);
                 mainBody.animator.SetBool("combineParts", true);
                 mainBody.animator.SetBool("hasBody", true);
                 if (_targetPlayer.hasLegs)
