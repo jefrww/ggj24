@@ -1,9 +1,4 @@
 {
-    "Map/SizeTest": {
-        "height": 4300,
-        "width": 2
-    },
-    "activeFile": "CityTileMap.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -23,8 +18,8 @@
             "scale": 3,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": -2242.6666666666665,
-                "y": 96.66666666666666
+                "x": -2243,
+                "y": 96.33333333333331
             }
         },
         "CityTiles.tsx": {
@@ -36,21 +31,14 @@
             "scaleInEditor": 6.1882
         }
     },
-    "last.exportedFilePath": "/home/andymichael/Andy/GGJ2024/Assets/TileSource",
-    "last.imagePath": "/home/andymichael/Andy/GGJ2024/Assets/TileSource/Art/1 Tiles",
-    "map.fixedSize": false,
-    "map.lastUsedExportFilter": "Tiled map files (*.tmx *.xml)",
-    "map.lastUsedFormat": "json",
     "openFiles": [
         "CityTileMap.tmx",
         "Robotset.tsx"
     ],
-    "project": "Roboto.tiled-project",
     "recentFiles": [
-        "Robotset.tsx",
         "CityTileMap.tmx",
+        "Robotset.tsx",
         "CityTiles.tsx",
         "CityTileMap.json"
-    ],
-    "tileset.lastUsedFormat": "tsx"
+    ]
 }
