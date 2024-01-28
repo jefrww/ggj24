@@ -37,6 +37,8 @@ public class PlayerMovement : MonoBehaviour
     private Collider2D _playerBounds;
 
     public CircleCollider2D HeadMelterCol;
+
+    private MeltableBarrier lastTouchedMelter;
     
     //private bool hasBody= true,hasLegs= true,hasHands= true,hasHead= true, hasJaw= true;
     //private bool hasBody= false,hasLegs= false,hasHands= false,hasHead= false, hasJaw= false;
@@ -64,11 +66,42 @@ public class PlayerMovement : MonoBehaviour
         (_onLeftWall, _onRightWall) = IsTouchingWalls();
         // get input and move player accordingly
         MovePlayer();
+        
+        checkMelters();
     }
 
 
-    
+    private void checkMelters()
+    {
+        if (hasHead && Input.GetKeyDown(KeyCode.E))
+        {
+            List<Collider2D> hitList = new List<Collider2D>();
+            ContactFilter2D filter = new ContactFilter2D();
+            filter.layerMask = LayerMask.GetMask("Barrier");
+            filter.useLayerMask = true;
+            _playerRigid.OverlapCollider(filter, hitList);
+            
+            foreach (var col in hitList)
+            {
+                MeltableBarrier melt = col.transform.GetComponent<MeltableBarrier>();
+                if (melt != null)
+                {
+                    melt.MeltMe();
+                }
+            }
+        }
+        
+        
+        
+                
+    }
 
+
+    public void setLastTouchedBarrier(MeltableBarrier barrier)
+    {
+        lastTouchedMelter = barrier;
+    }
+    
     private void MovePlayer()
     {
         Vector3 velocity = Vector3.zero;
