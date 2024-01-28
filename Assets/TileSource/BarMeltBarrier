@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template>
  <tileset firstgid="1" source="Robotset.tsx"/>
- <object name="MeltBarrier" type="MeltBarrier" gid="14" width="32" height="32"/>
+ <object name="MeltBarrier" gid="32" width="32" height="32"/>
 </template>

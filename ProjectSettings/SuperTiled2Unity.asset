@@ -54,4 +54,6 @@ MonoBehaviour:
   - {r: 0, g: 1, b: 1, a: 1}
   - {r: 0.7372549, g: 0.56078434, b: 0.56078434, a: 1}
   m_CustomObjectTypes: []
-  m_PrefabReplacements: []
+  m_PrefabReplacements:
+  - m_TypeName: MeltBarrier
+    m_Prefab: {fileID: 8343917600848268009, guid: 87b84a8af0757f91bb50573852a206da, type: 3}
