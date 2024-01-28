@@ -88,6 +88,8 @@ public class CameraController : MonoBehaviour
         
         TransmitZone inZone = isPlayerInTransmitZone();
         
+        mainBody.animator.SetBool("inTransmissionZone", inZone != null);
+        
         if (!_isTransitioning)
         {
             if (isMainBodyTarget() && inZone && Input.GetKeyDown(KeyCode.E)) {
