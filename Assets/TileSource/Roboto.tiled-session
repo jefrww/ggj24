@@ -1,5 +1,4 @@
 {
-    "activeFile": "CityTileMap.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -22,8 +21,8 @@
             "scale": 2.6224,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": -2224.107687614399,
-                "y": -125.83892617449663
+                "x": -2200.4652226967664,
+                "y": -58.34350213544846
             }
         },
         "CityTiles.tsx": {
@@ -35,13 +34,10 @@
             "scaleInEditor": 6.1882
         }
     },
-    "last.objectTemplatePath": "/home/andymichael/Andy/GGJ2024/Assets/TileSource",
-    "last.objectTypesPath": "/home/andymichael/Andy/GGJ2024/Assets/TileSource/propertytypes.xml",
     "openFiles": [
         "CityTileMap.tmx",
         "Robotset.tsx"
     ],
-    "project": "Roboto.tiled-project",
     "recentFiles": [
         "CityTileMap.tmx",
         "CityTileMap.json",
