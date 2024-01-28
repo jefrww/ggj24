@@ -61,6 +61,16 @@
    <object id="2" x="0" y="0" width="32" height="32"/>
   </objectgroup>
  </tile>
+ <tile id="14">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="0" width="32" height="32"/>
+  </objectgroup>
+ </tile>
+ <tile id="15">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="0" width="32" height="32"/>
+  </objectgroup>
+ </tile>
  <tile id="17">
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="32" height="32"/>
@@ -93,30 +103,22 @@
  </tile>
  <tile id="22">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="32" height="32"/>
-   <object id="2" x="0" y="0" width="32" height="32"/>
-   <object id="3" x="0" y="0" width="32" height="32"/>
+   <object id="4" x="0" y="0" width="32" height="32"/>
   </objectgroup>
  </tile>
  <tile id="23">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="32" height="32"/>
-   <object id="2" x="0" y="0" width="32" height="32"/>
-   <object id="3" x="0" y="0" width="32" height="32"/>
+   <object id="4" x="0" y="0" width="32" height="32"/>
   </objectgroup>
  </tile>
  <tile id="24">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="32" height="32"/>
-   <object id="2" x="0" y="0" width="32" height="32"/>
-   <object id="3" x="0" y="0" width="32" height="32"/>
+   <object id="4" x="0" y="0" width="32" height="32"/>
   </objectgroup>
  </tile>
  <tile id="25">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="32" height="32"/>
-   <object id="2" x="0" y="0" width="32" height="32"/>
-   <object id="3" x="0" y="0" width="32" height="32"/>
+   <object id="4" x="0" y="0" width="32" height="32"/>
   </objectgroup>
  </tile>
  <tile id="26">
@@ -142,6 +144,11 @@
   </objectgroup>
  </tile>
  <tile id="30">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="0" width="32" height="32"/>
+  </objectgroup>
+ </tile>
+ <tile id="31">
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="32" height="32"/>
   </objectgroup>
