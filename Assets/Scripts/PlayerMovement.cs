@@ -33,7 +33,9 @@ public class PlayerMovement : MonoBehaviour
     public bool hasJaw = false;
     public Animator animator;
 
-    private Rigidbody2D rb;
+    private Rigidbody2D _playerRigid;
+    private Collider2D _playerBounds;
+    
     //private bool hasBody= true,hasLegs= true,hasHands= true,hasHead= true, hasJaw= true;
     //private bool hasBody= false,hasLegs= false,hasHands= false,hasHead= false, hasJaw= false;
 
@@ -42,7 +44,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Awake()
     {
-        rb = this.GetComponent<Rigidbody2D>();
+        _playerRigid = this.GetComponent<Rigidbody2D>();
+        _playerBounds = this.GetComponent<Collider2D>();
     }
 
     void Update()
@@ -61,14 +64,8 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer();
     }
 
-    private void FixedUpdate()
-    {
-        // increase drag when passing a speed threshold
-        if (rb.velocity.sqrMagnitude > maxVelocity)
-        {
-            rb.velocity *= 0.75f;
-        }
-    }
+
+    
 
     private void MovePlayer()
     {
@@ -152,17 +149,36 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
-        rb.AddForce(velocity);
+        _playerRigid.AddForce(velocity);
+
+        // reduce air control
+        if (isInAir())
+        {
+            velocity *= aircontrol;
+        }
+
+        _playerRigid.AddForce(velocity);
+
+        if (Input.GetKeyDown(KeyCode.Space) && canJump())
+        {
+            _playerRigid.AddForce(Vector2.up * jumpSpeed);
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (_playerRigid.velocity.sqrMagnitude > maxVelocity)
+        {
+            _playerRigid.velocity *= 0.75f;
+        }
     }
 
     private void SetAnimation()
     {
-        animator.SetFloat("horizontalVelocity", rb.velocity.x);
-        
+        animator.SetFloat("horizontalVelocity", _playerRigid.velocity.x);
         animator.SetBool("pressedRight",Input.GetKeyDown(KeyCode.D));
         animator.SetBool("pressedLeft",Input.GetKeyDown(KeyCode.A));
         
-
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             hasBody = !hasBody;
@@ -196,19 +212,29 @@ public class PlayerMovement : MonoBehaviour
     
     bool IsTouchingGround()
     {
-        RaycastHit2D hit = Physics2D.Raycast(rb.transform.position, Vector3.down, groundDistance,
-            LayerMask.GetMask("Ground"));
-        if (hit.collider == null)
+        Vector2 playerPos = _playerRigid.transform.position;
+        Vector2 extents = _playerBounds.bounds.extents;
+        Vector2 playerLeft = new Vector2(playerPos.x - (extents.x * .98f), playerPos.y);
+        Vector2 playerRight = new Vector2(playerPos.x + (extents.x * .98f), playerPos.y);
+        
+        return testGround(playerPos) || testGround(playerLeft) || testGround(playerRight);
+    }
+
+    bool testGround(Vector2 origin)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(origin, Vector3.down, groundDistance,
+            LayerMask.GetMask("Ground", "Wall"));
+        
+        if (hit.transform == null)
         {
             return false;
         }
-
-        return hit.collider.gameObject.layer == _groundLayer;
+        
+        return hit.transform.gameObject.layer == _groundLayer;
     }
-
     (bool left, bool right) IsTouchingWalls()
     {
-        Vector3 position = rb.transform.position;
+        Vector3 position = _playerRigid.transform.position;
         bool touchingLeft = false, touchingRight = false;
         RaycastHit2D leftHit = Physics2D.Raycast(position, Vector3.left, wallDistance, LayerMask.GetMask("Wall"));
         RaycastHit2D rightHit = Physics2D.Raycast(position, Vector3.right, wallDistance, LayerMask.GetMask("Wall"));
