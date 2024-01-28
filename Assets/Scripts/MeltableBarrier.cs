@@ -9,9 +9,10 @@ public class MeltableBarrier : MonoBehaviour
         
     }
 
-    private void OnCollisionStay2D(Collision2D other)
+    public void MeltMe()
     {
-        Debug.Log("CCCCCCC");
+        Debug.Log("MELTING DOWN A SQUARE");
+        gameObject.SetActive(false);
     }
 }
 
