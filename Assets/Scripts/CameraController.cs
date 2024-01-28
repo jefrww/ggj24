@@ -118,12 +118,22 @@ public class CameraController : MonoBehaviour
                     mainBody.hasHead = true;
                     mainBody.animator.SetBool("hasHead", true);
                 }
+                if (_targetPlayer.hasJaw)
+                {
+                    mainBody.hasJaw = true;
+                    mainBody.animator.SetBool("hasJaw", true);
+                }
                 inZone.gameObject.SetActive(false);
                 GameObject toDeactivate = _targetPlayer.transform.parent.gameObject;
 
                 setTargetPart(mainBody);
                 toDeactivate.SetActive(false);
             }            
+        }
+
+        if (mainBody.hasJaw && Input.GetKeyDown(KeyCode.E))
+        {
+            mainBody.animator.SetBool("startLaughing", true);
         }
 
     }
