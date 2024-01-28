@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 5684997064322946308}
   - component: {fileID: 3196213545101544321}
   - component: {fileID: 479957108602557860}
+  - component: {fileID: 2016980090987763666}
   m_Layer: 9
   m_Name: MeltBarrier
   m_TagString: Untagged
@@ -149,6 +150,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &2016980090987763666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3231974410209109587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb69770c6f2d4f969759c45b02350fa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5487397362123821138
 GameObject:
   m_ObjectHideFlags: 0
