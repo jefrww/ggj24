@@ -6,9 +6,13 @@ using UnityEngine;
 enum Movement
 {
     Horizontal,
+    HorizontalBursts,
+    Airtime,
+    Jump,
     Vertical,
     None
 }
+
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -20,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     public float maxVelocity;
     public float aircontrol;
     public bool isActive;
+    public float burstSpeed;
 
     public bool hasBody = false;
     public bool hasLegs = false;
@@ -52,41 +57,79 @@ public class PlayerMovement : MonoBehaviour
         // get current state of the player first
         _onGround = IsTouchingGround();
         (_onLeftWall, _onRightWall) = IsTouchingWalls();
-        // Debug.Log("Ground: " + _onGround);
-         Debug.Log("Left Wall: " + _onLeftWall);
-         Debug.Log("Right Wall: " + _onRightWall);
+        // get input and move player accordingly
+        MovePlayer();
+    }
 
+    private void FixedUpdate()
+    {
+        // increase drag when passing a speed threshold
+        if (rb.velocity.sqrMagnitude > maxVelocity)
+        {
+            rb.velocity *= 0.75f;
+        }
+    }
+
+    private void MovePlayer()
+    {
         Vector3 velocity = Vector3.zero;
         Movement movement = Movement.None;
-        // get input
-        if (Input.GetKey(KeyCode.A) && canGoLeft())
-        {
-            movement = Movement.Horizontal;
-            velocity += Vector3.left;
-        }
 
-        if (Input.GetKey(KeyCode.D) && canGoRight())
+        if (hasOnlyBody())
         {
-            movement = Movement.Horizontal;
-            velocity += Vector3.right;
+            // get input
+            if (Input.GetKeyDown(KeyCode.A) && canGoLeft())
+            {
+                movement = Movement.HorizontalBursts;
+                velocity += Vector3.left;
+            }
+
+            if (Input.GetKeyDown(KeyCode.D) && canGoRight())
+            {
+                movement = Movement.HorizontalBursts;
+                velocity += Vector3.right;
+            }
         }
+        // use other functions for specifying unique movements
+        else
+        {
+            // get input
+            if (Input.GetKey(KeyCode.A) && canGoLeft())
+            {
+                movement = Movement.Horizontal;
+                velocity += Vector3.left;
+            }
+
+            if (Input.GetKey(KeyCode.D) && canGoRight())
+            {
+                movement = Movement.Horizontal;
+                velocity += Vector3.right;
+            }
         
-        if (Input.GetKey(KeyCode.W) && canWallClimb())
-        {
-            movement = Movement.Vertical;
-            velocity += Vector3.up;
-        }
+            if (Input.GetKey(KeyCode.W) && canWallClimb())
+            {
+                movement = Movement.Vertical;
+                velocity += Vector3.up;
+            }
 
-        if (Input.GetKey(KeyCode.S) && canWallClimb())
-        {
-            movement = Movement.Vertical;
-            velocity += Vector3.down;
-        }
+            if (Input.GetKey(KeyCode.S) && canWallClimb())
+            {
+                movement = Movement.Vertical;
+                velocity += Vector3.down;
+            }
+            if (Input.GetKeyDown(KeyCode.Space) && canJump())
+            {
+                movement = Movement.Jump;
+                velocity = Vector3.up;
+            }
 
+            if (isInAir())
+            {
+                movement = Movement.Airtime;
+            }
+        }
         // normalize change in speed to ensure consistency
         velocity = velocity.normalized;
-
-
         // apply movement
         switch (movement)
         {
@@ -96,35 +139,29 @@ public class PlayerMovement : MonoBehaviour
             case Movement.Horizontal:
                 velocity *= horizontalSpeed;
                 break;
+            case Movement.Jump:
+                velocity *= jumpSpeed;
+                break;
+            case Movement.HorizontalBursts:
+                velocity *= burstSpeed;
+                break;
+            case Movement.Airtime:
+                velocity *= aircontrol;
+                break;
             case Movement.None:
                 break;
         }
 
-        // reduce air control
-        if (isInAir())
-        {
-            velocity *= aircontrol;
-        }
-
         rb.AddForce(velocity);
-
-        if (Input.GetKeyDown(KeyCode.Space) && canJump())
-        {
-            rb.AddForce(Vector2.up * jumpSpeed);
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (rb.velocity.sqrMagnitude > maxVelocity)
-        {
-            rb.velocity *= 0.75f;
-        }
     }
 
     private void SetAnimation()
     {
         animator.SetFloat("horizontalVelocity", rb.velocity.x);
+        
+        animator.SetBool("pressedRight",Input.GetKeyDown(KeyCode.D));
+        animator.SetBool("pressedLeft",Input.GetKeyDown(KeyCode.A));
+        
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -217,5 +254,20 @@ public class PlayerMovement : MonoBehaviour
     bool isInAir()
     {
         return !(_onRightWall || _onLeftWall || _onGround);
+    }
+
+    bool hasOnlyBody()
+    {
+     return hasBody && !(hasLegs || hasHead || hasHands ||hasJaw);
+    }
+
+    bool hasBodyAndLegs()
+    {
+        return hasBody && hasLegs &&!( hasHead || hasHands ||hasJaw);
+    }
+
+    bool hasBodyLegsAndArms()
+    {
+        return hasBody && hasLegs && hasHands  && !( hasHead ||hasJaw);
     }
 }
