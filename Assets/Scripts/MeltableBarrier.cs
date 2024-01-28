@@ -13,6 +13,7 @@ public class MeltableBarrier : MonoBehaviour
     {
         Debug.Log("MELTING DOWN A SQUARE");
         gameObject.SetActive(false);
+        this.GetComponent<Animator>().SetBool("melt", true);
     }
 }
 
