@@ -35,6 +35,8 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D _playerRigid;
     private Collider2D _playerBounds;
+
+    public CircleCollider2D HeadMelterCol;
     
     //private bool hasBody= true,hasLegs= true,hasHands= true,hasHead= true, hasJaw= true;
     //private bool hasBody= false,hasLegs= false,hasHands= false,hasHead= false, hasJaw= false;
