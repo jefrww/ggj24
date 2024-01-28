@@ -52,6 +52,9 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // reset the animation to merge body parts once it's done
+        mainBody.animator.SetBool("combineParts", false);
+        TransmitZone inZone = isPlayerInTransmitZone();
         if (!_isTransitioning && Input.GetKeyDown(KeyCode.K))
         {
             if (_targetPlayer == mainBody)
@@ -86,7 +89,7 @@ public class CameraController : MonoBehaviour
                 _targetPlayer.transform.position.y, this.transform.position.z);
         }
         
-        TransmitZone inZone = isPlayerInTransmitZone();
+        
         
         mainBody.animator.SetBool("inTransmissionZone", inZone != null);
         
@@ -98,17 +101,22 @@ public class CameraController : MonoBehaviour
             else if (!isMainBodyTarget() && inZone && inZone.targetPlayer == _targetPlayer)
             {
                 Debug.Log("REUNITED!");
+                mainBody.animator.SetBool("combineParts", true);
+                mainBody.animator.SetBool("hasBody", true);
                 if (_targetPlayer.hasLegs)
                 {
                     mainBody.hasLegs = true;
+                    mainBody.animator.SetBool("hasLegs", true);
                 }
                 if (_targetPlayer.hasHands)
                 {
                     mainBody.hasHands = true;
+                    mainBody.animator.SetBool("hasHands", true);
                 }
                 if (_targetPlayer.hasHead)
                 {
                     mainBody.hasHead = true;
+                    mainBody.animator.SetBool("hasHead", true);
                 }
                 inZone.gameObject.SetActive(false);
                 GameObject toDeactivate = _targetPlayer.transform.parent.gameObject;
